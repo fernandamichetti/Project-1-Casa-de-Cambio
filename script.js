@@ -14,4 +14,9 @@ const handleSearchEvent = () => {
 
 const fetchCurrency = () => {
   const saveFetch = fetch(`https://api.exchangerate.host/latest`)
+  .then((response) => response.json())
+  .then((object) => console.log(object))
+  .catch((error) => console.log(error, 'Solicitação falhou'))
 }
+
+fetchCurrency();
