@@ -9,16 +9,17 @@ const setUpEventHandlers = () => {
 
 const handleSearchEvent = () => {
   const currencyValue = document.querySelector('#currency-input').value;
-  console.log(currencyValue)
+  clearList();
+  fetchCurrency(currencyValue)
 }
 
-const fetchCurrency = () => {
-  const saveFetch = fetch(`https://api.exchangerate.host/latest`)
+const fetchCurrency = (currency) => {
+  const saveFetch = fetch(`https://api.exchangerate.host/latest?base=${currency}`)
   .then((response) => response.json())
   .then((object) => {
+    baseCurrency(object.base)
     const rates = object.rates;
     const ratesEntries = Object.entries(rates)
-    // console.log(ratesEntries);
     ratesEntries.forEach((entry) => {
       const currency = entry[0];
       const rates = entry[1];
@@ -28,10 +29,18 @@ const fetchCurrency = () => {
       const itenCurencyList = document.createElement('li');
       itenCurencyList.innerText = `${currency}: ${rates}`;
       console.log(itenCurencyList);
-      currencyList.appendChild(itenCurencyList)
+      currencyList.appendChild(itenCurencyList);
     })
   })
   .catch((error) => console.log(error, 'Solicitação falhou'))
 }
 
-fetchCurrency();
+const clearList = () => {
+  const currencyList = document.querySelector('#currency-list');
+  currencyList.innerHTML = "";
+}
+
+const baseCurrency = (base) => {
+  const baseTitle = document.querySelector('#base');
+  baseTitle.innerHTML = `Valores referentes a 1 ${base}`
+};
