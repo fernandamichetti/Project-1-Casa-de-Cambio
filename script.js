@@ -19,18 +19,7 @@ const fetchCurrency = (currency) => {
   .then((object) => {
     baseCurrency(object.base)
     const rates = object.rates;
-    const ratesEntries = Object.entries(rates)
-    ratesEntries.forEach((entry) => {
-      const currency = entry[0];
-      const rates = entry[1];
-      console.log(currency, rates);
-
-      const currencyList = document.querySelector('#currency-list');
-      const itenCurencyList = document.createElement('li');
-      itenCurencyList.innerText = `${currency}: ${rates}`;
-      console.log(itenCurencyList);
-      currencyList.appendChild(itenCurencyList);
-    })
+    handleRate(rates);
   })
   .catch((error) => console.log(error, 'Solicitação falhou'))
 }
@@ -44,3 +33,20 @@ const baseCurrency = (base) => {
   const baseTitle = document.querySelector('#base');
   baseTitle.innerHTML = `Valores referentes a 1 ${base}`
 };
+
+const renderRate = (currency, rates) => {
+  const currencyList = document.querySelector('#currency-list');
+  const itenCurencyList = document.createElement('li');
+  itenCurencyList.innerText = `${currency}: ${rates}`;
+  console.log(itenCurencyList);
+  currencyList.appendChild(itenCurencyList);
+}
+
+const handleRate = (rates) => {
+  const ratesEntries = Object.entries(rates)
+  ratesEntries.forEach((entry) => {
+    const currency = entry[0];
+    const rates = entry[1];
+    renderRate(currency, rates);
+  })
+}
